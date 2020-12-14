@@ -27,7 +27,7 @@ jobs:
     - task: PublishPipelineArtifact@0
       displayName: 'Publish code coverage report'
       inputs:
-        artifactName: "coverage_rpt.txt"
+        artifactName: "$(Build.SourcesDirectory)/build_nnapi/Debug/coverage_rpt.txt"
         targetPath: '$(Build.ArtifactStagingDirectory)'
 
     - task: PythonScript@0
@@ -38,7 +38,7 @@ jobs:
           --commit_hash=$(OnnxRuntimeGitCommitHash)
           --report_url="https://dev.azure.com/onnxruntime/onnxruntime/_build/results?buildId=$(Build.BuildId)"
           --report_file="$(Build.SourcesDirectory)/build_nnapi/Debug/coverage_rpt.txt"
-          --build_config="{\"os\":\"android\", \"arch\":\"x86_64\", \"config\":\"nnapi\"}"
+          --build_config="\'{\"os\":\"android\", \"arch\":\"x86_64\", \"config\":\"nnapi\"}\'"
       env:
         DASHBOARD_MYSQL_ORT_PASSWORD: $(dashboard-mysql-ort-password)
     - script: /bin/bash tools/ci_build/github/linux/ort_minimal/nnapi_minimal_build_minimal_ort_and_run_tests.sh $(pwd)
